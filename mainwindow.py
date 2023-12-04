@@ -9,16 +9,16 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from classfile.DataBase import DataBase
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 575)
+        MainWindow.resize(880, 734)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 801, 571))
+        self.tabWidget.setGeometry(QtCore.QRect(40, 60, 801, 571))
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -86,10 +86,34 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
+        self.comboBox_6 = QtWidgets.QComboBox(self.tab_2)
+        self.comboBox_6.setGeometry(QtCore.QRect(20, 20, 311, 22))
+        self.comboBox_6.setObjectName("comboBox_6")
+        self.pushButton_4 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_4.setGeometry(QtCore.QRect(670, 70, 113, 23))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.lineEdit_8 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_8.setGeometry(QtCore.QRect(280, 70, 113, 22))
+        self.lineEdit_8.setObjectName("lineEdit_8")
+        self.lineEdit_10 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_10.setGeometry(QtCore.QRect(540, 70, 113, 22))
+        self.lineEdit_10.setObjectName("lineEdit_10")
+        self.lineEdit_9 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_9.setGeometry(QtCore.QRect(410, 70, 113, 22))
+        self.lineEdit_9.setObjectName("lineEdit_9")
+        self.lineEdit_7 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_7.setGeometry(QtCore.QRect(150, 70, 113, 22))
+        self.lineEdit_7.setObjectName("lineEdit_7")
+        self.lineEdit_6 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_6.setGeometry(QtCore.QRect(20, 70, 113, 22))
+        self.lineEdit_6.setObjectName("lineEdit_6")
+        self.pushButton_3 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_3.setGeometry(QtCore.QRect(350, 20, 113, 23))
+        self.pushButton_3.setObjectName("pushButton_3")
         self.tabWidget.addTab(self.tab_2, "")
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -113,6 +137,13 @@ class Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "Адрес"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
+        self.pushButton_4.setText(_translate("MainWindow", "Заменить"))
+        self.lineEdit_8.setPlaceholderText(_translate("MainWindow", "Отчество"))
+        self.lineEdit_10.setPlaceholderText(_translate("MainWindow", "Адрес"))
+        self.lineEdit_9.setPlaceholderText(_translate("MainWindow", "Телефон"))
+        self.lineEdit_7.setPlaceholderText(_translate("MainWindow", "Фамилия"))
+        self.lineEdit_6.setPlaceholderText(_translate("MainWindow", "Имя"))
+        self.pushButton_3.setText(_translate("MainWindow", "Удалить"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
 
 

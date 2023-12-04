@@ -4,46 +4,73 @@ import psycopg2
 class DataBase:
     conn = psycopg2.connect(dbname='db', user='postgres', password='qwerty', port='5432', host='127.0.0.1')
     cur = conn.cursor()
+    data = [
+        'users_name.user_name =',
+        'users_surname.user_surname =',
+        'users_lastname.user_lastname =',
+        'users_phone.user_phone =',
+        'users_address.user_address ='
+    ]
+
+    data_2 = [
+        'user_name',
+        'surname',
+        'lastname',
+        'phone',
+        'address'
+    ]
+
+
+    data_3 = [
+        'users_name',
+        'users_surname',
+        'users_lastname',
+        'users_phone',
+        'users_address'
+    ]
+    data_4 = [
+        'user_name',
+        'user_surname',
+        'user_lastname',
+        'user_phone',
+        'user_address'
+    ]
 
     @classmethod
-    def insert_user(cls, arg: dict):
-        arg[0] = arg[0][0:30]
-        if arg[0] != '':
-            cls.cur.execute(f"INSERT INTO users_name (user_name) VALUES('{arg[0]}')  ON CONFLICT (user_name) DO NOTHING")
-            cls.conn.commit()
-            cls.cur.execute("SELECT id FROM users_name ORDER BY id DESC")
-            user_name_id = cls.cur.fetchall()[0][0]
-        
-        if arg[1] != '':
-            arg[1] = arg[1][0:30]
-            cls.cur.execute(f"INSERT INTO users_surname (user_surname) VALUES('{arg[1]}')  ON CONFLICT (user_surname) DO NOTHING")
-            cls.conn.commit()
-            cls.cur.execute("SELECT id FROM users_surname ORDER BY id DESC")
-            user_surname_id = cls.cur.fetchall()[0][0]
+    def change_user(cls, user_id: str, user_info: dict):
+        cls.cur.execute(f"SELECT * FROM full_info_user WHERE id = {user_id}")
+        user = cls.cur.fetchall()[0]
+        for i in range(0, len(user_info)):
+            if user_info[i] != '':
+                cls.cur.execute(f"UPDATE {cls.data_3[i]} SET {cls.data_4[i]}='{user_info[i]}' WHERE id = {user[i+1]}")
+                cls.conn.commit()
+            
 
-        if arg[2] != '':
-            arg[2] = arg[2][0:30]
-            cls.cur.execute(f"INSERT INTO users_lastname (user_lastname) VALUES('{arg[2]}') ON CONFLICT (user_lastname) DO NOTHING")
-            cls.conn.commit()
-            cls.cur.execute("SELECT id FROM users_lastname ORDER BY id DESC")
-            user_lastname_id = cls.cur.fetchall()[0][0]
-
-        if arg[3] != '':
-            arg[3] = arg[3][0:30]
-            cls.cur.execute(f"INSERT INTO users_phone (user_phone) VALUES('{arg[3]}') ON CONFLICT (user_phone) DO NOTHING")
-            cls.conn.commit()
-            cls.cur.execute("SELECT id FROM users_phone ORDER BY id DESC")
-            user_phone_id = cls.cur.fetchall()[0][0]
-        
-        if arg[4] != '':
-            arg[4] = arg[4][0:30]
-            cls.cur.execute(f"INSERT INTO users_address (user_address) VALUES('{arg[4]}') ON CONFLICT (user_address) DO NOTHING")
-            cls.conn.commit()
-            cls.cur.execute("SELECT id FROM users_address ORDER BY id DESC")
-            user_address_id = cls.cur.fetchall()[0][0]
-
-        cls.cur.execute(f"INSERT INTO full_info_user (user_name, lastname, surname, address, phone) VALUES({user_name_id}, {user_lastname_id}, {user_surname_id}, {user_address_id}, {user_phone_id})")
+    @classmethod
+    def delete_user(cls, user_id):
+        cls.cur.execute(f"SELECT * FROM full_info_user WHERE id = {user_id}")
+        user = cls.cur.fetchall()[0]
+        cls.cur.execute(f"DELETE FROM full_info_user WHERE id = {user_id}")
         cls.conn.commit()
+        for i in range(0, len(cls.data_2)):
+            cls.cur.execute(f"SELECT * FROM full_info_user WHERE full_info_user.{cls.data_2[i]} = {user[1]}")
+            if len(cls.cur.fetchall()) == 0:
+                cls.cur.execute(f"DELETE FROM {cls.data_3[i]} WHERE id = {user[i+1]}")
+                cls.conn.commit()
+        
+
+    @classmethod
+    def insert_user(cls, arg: dict, from_form=True):
+        user_info = []
+        for i in range(0, len (arg)):
+            if arg[i] != '':
+                cls.cur.execute(f"INSERT INTO {cls.data_3[i]} ({cls.data_4[i]}) VALUES('{arg[i]}')  ON CONFLICT ({cls.data_4[i]}) DO NOTHING")
+                cls.conn.commit()
+                cls.cur.execute(f"SELECT id FROM {cls.data_3[i]} ORDER BY id DESC")
+                user_info.append(cls.cur.fetchall()[0][0])
+        if from_form:
+            cls.cur.execute(f"INSERT INTO full_info_user (user_name, lastname, surname, address, phone) VALUES({user_info[0]}, {user_info[1]}, {user_info[2]}, {user_info[3]}, {user_info[4]})")
+            cls.conn.commit()
         
     @classmethod
     def get_all_from_table(cls, table_name:str, column_name:str) ->dict:
@@ -58,9 +85,9 @@ class DataBase:
         return return_dict
 
     @classmethod
-    def get_users(cls):
-        cls.cur.execute("""SELECT 
-    
+    def get_users(cls, delete=False):
+        cls.cur.execute(f"""SELECT 
+    {('', 'full_info_user.id,')[delete == True]}
     users_name.user_name,
     users_surname.user_surname,
     users_lastname.user_lastname,
@@ -114,20 +141,13 @@ JOIN
     users_address ON full_info_user.address = users_address.id
 	
 WHERE '''
-        data = [
-            'users_name.user_name =',
-            'users_surname.user_surname =',
-            'users_lastname.user_lastname =',
-            'users_phone.user_phone =',
-            'users_address.user_address ='
-        ]
         count = 0
         for i in range(0, len(users_info)):
             if users_info[i] != '*':
                 if count > 0:
-                    sql_command += f"AND {data[i]} '{users_info[i]}'"
+                    sql_command += f"AND {cls.data[i]} '{users_info[i]}'"
                 else:
-                    sql_command += f"{data[i]} '{users_info[i]}'"
+                    sql_command += f"{cls.data[i]} '{users_info[i]}'"
                     count += 1
 
 

@@ -2,7 +2,7 @@ from mainwindow import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
 import sys
-from classfile.DataBase import DataBase as db
+from classfile.DataBase import DataBase
 
 
 class Interface(QtWidgets.QWidget):
@@ -13,9 +13,40 @@ class Interface(QtWidgets.QWidget):
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.fill_combobox()
-        self.update_table(users = db.get_users())
+        self.update_table(users = DataBase.get_users())
+        self.delete_user_combobox()
         self.ui.pushButton.clicked.connect(self.add_user)
         self.ui.pushButton_2.clicked.connect(self.search_user)
+        self.ui.pushButton_4.clicked.connect(self.change_user)
+        self.ui.pushButton_3.clicked.connect(self.delete_user)
+
+    def delete_user_combobox(self):
+        self.ui.comboBox_6.clear()
+        users = DataBase.get_users(delete=True)
+        for user in users:
+            self.ui.comboBox_6.addItem(f"{user[1]} {user[2]} {user[3]} {user[4]} {user[5]}", userData=user[0])
+        
+    def delete_user(self):
+        user_id = self.ui.comboBox_6.currentData()
+        DataBase.delete_user(user_id)
+        self.delete_user_combobox()
+        self.fill_combobox()
+        self.update_table(users=DataBase.get_users())
+
+    def change_user(self):
+        user_id = self.ui.comboBox_6.currentData()
+        user_name = self.ui.lineEdit_6.text()
+        user_surname = self.ui.lineEdit_7.text()
+        user_lastname = self.ui.lineEdit_8.text()
+        user_phone = self.ui.lineEdit_9.text()
+        user_address = self.ui.lineEdit_10.text()
+        
+        data_dict = self.refresh_data(user_name, user_surname, user_lastname, user_phone, user_address)
+        DataBase.change_user(user_id=user_id, user_info=data_dict)
+        self.fill_combobox()
+        self.update_table(users=DataBase.get_users())
+        self.delete_user_combobox()
+
 
     def update_table(self, users):
         rows = len(users)
@@ -39,6 +70,7 @@ class Interface(QtWidgets.QWidget):
         self.ui.comboBox_5.clear()        
 
     def fill_combobox(self):
+        self.clear_combobox()
         user_name = DataBase.get_all_from_table(table_name='users_name', column_name='user_name')
         self.ui.comboBox.addItems(user_name)
 
@@ -61,7 +93,7 @@ class Interface(QtWidgets.QWidget):
         user_phone = self.ui.comboBox_4.currentText()
         user_address = self.ui.comboBox_5.currentText()
 
-        users = db.search(user_name, user_surname, user_lastname, user_phone, user_address)
+        users = DataBase.search(user_name, user_surname, user_lastname, user_phone, user_address)
         self.update_table(users=users)
 
     def add_user(self):
@@ -72,14 +104,11 @@ class Interface(QtWidgets.QWidget):
         user_address = self.ui.lineEdit_5.text()
         
         data_dict = self.refresh_data(user_name, user_surname, user_lastname, user_phone, user_address)
-        db.insert_user(data_dict)
-        self.update_table(users = db.get_users())
-        self.clear_combobox()
+        DataBase.insert_user(data_dict)
+        self.update_table(users = DataBase.get_users())
+        self.delete_user_combobox()
         self.fill_combobox()
 
-    def save_data(self):
-        pass
-        
 
     def refresh_data(self, *args) -> dict:
         user_name = args[0][0:30] if len(args[0]) > 30 else args[0]
