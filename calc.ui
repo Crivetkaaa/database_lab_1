@@ -39,6 +39,15 @@
         <height>22</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string/>
+      </property>
      </widget>
      <widget class="QLineEdit" name="lineEdit_3">
       <property name="geometry">
@@ -75,6 +84,9 @@
         <height>22</height>
        </rect>
       </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QComboBox" name="comboBox_4">
       <property name="geometry">
@@ -85,6 +97,9 @@
         <height>22</height>
        </rect>
       </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QComboBox" name="comboBox_5">
       <property name="geometry">
@@ -94,6 +109,9 @@
         <width>113</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="Line" name="line">
@@ -130,6 +148,9 @@
         <width>113</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLineEdit" name="lineEdit_4">
@@ -238,6 +259,9 @@
         <width>311</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton_4">
