@@ -2,4 +2,3 @@ __pycache__
 venv
 test.*
 *.db
-sql_command
