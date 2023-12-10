@@ -94,8 +94,15 @@ class Ui_MainWindow(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.comboBox_6 = QtWidgets.QComboBox(self.tab_2)
+        self.comboBox_6.setEnabled(True)
         self.comboBox_6.setGeometry(QtCore.QRect(20, 20, 311, 22))
         self.comboBox_6.setTabletTracking(False)
+        self.comboBox_6.setAcceptDrops(False)
+        self.comboBox_6.setToolTip("")
+        self.comboBox_6.setAutoFillBackground(False)
+        self.comboBox_6.setEditable(False)
+        self.comboBox_6.setCurrentText("")
+        self.comboBox_6.setFrame(True)
         self.comboBox_6.setObjectName("comboBox_6")
         self.pushButton_4 = QtWidgets.QPushButton(self.tab_2)
         self.pushButton_4.setGeometry(QtCore.QRect(670, 70, 113, 23))
@@ -121,7 +128,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_2, "")
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

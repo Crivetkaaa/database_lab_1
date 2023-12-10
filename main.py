@@ -86,28 +86,42 @@ class Interface(QtWidgets.QWidget):
         user_address = DataBase.get_all_from_table(table_name='users_address', column_name='user_address')
         self.ui.comboBox_5.addItems(user_address)
 
+    def check_user_info(*args):
+        check = True
+        for arg in args:
+            if arg == '':
+                error = QMessageBox()
+                error.setWindowTitle('ErrorWarning')
+                error.setText('Введите данные во все строки')
+                error.exec_()
+                check = False
+                break
+
+        return check
+
     def search_user(self):
         user_name = self.ui.comboBox.currentText()
         user_surname = self.ui.comboBox_2.currentText()
         user_lastname = self.ui.comboBox_3.currentText()
         user_phone = self.ui.comboBox_4.currentText()
-        user_address = self.ui.comboBox_5.currentText()
-
+        user_address = self.ui.comboBox_5.currentText()  
         users = DataBase.search(user_name, user_surname, user_lastname, user_phone, user_address)
         self.update_table(users=users)
 
     def add_user(self):
-        user_name = self.ui.lineEdit.text()
-        user_surname = self.ui.lineEdit_2.text()
-        user_lastname = self.ui.lineEdit_3.text()
-        user_phone = self.ui.lineEdit_4.text()
-        user_address = self.ui.lineEdit_5.text()
+        user_name = self.ui.lineEdit.text().replace(' ', '')
+        user_surname = self.ui.lineEdit_2.text().replace(' ', '')
+        user_lastname = self.ui.lineEdit_3.text().replace(' ', '')
+        user_phone = self.ui.lineEdit_4.text().replace(' ', '')
+        user_address = self.ui.lineEdit_5.text().replace(' ', '')
         
-        data_dict = self.refresh_data(user_name, user_surname, user_lastname, user_phone, user_address)
-        DataBase.insert_user(data_dict)
-        self.update_table(users = DataBase.get_users())
-        self.delete_user_combobox()
-        self.fill_combobox()
+        check = self.check_user_info(user_name, user_surname, user_lastname, user_phone, user_address)
+        if check:
+            data_dict = self.refresh_data(user_name, user_surname, user_lastname, user_phone, user_address)
+            DataBase.insert_user(data_dict)
+            self.update_table(users = DataBase.get_users())
+            self.delete_user_combobox()
+            self.fill_combobox()
 
 
     def refresh_data(self, *args) -> dict:
