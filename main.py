@@ -55,6 +55,13 @@ class Interface(QtWidgets.QWidget):
         self.ui.lineEdit_9.clear()        
         self.ui.lineEdit_10.clear()
 
+    def clear_2(self):
+        self.ui.lineEdit.clear()
+        self.ui.lineEdit_2.clear()
+        self.ui.lineEdit_3.clear()
+        self.ui.lineEdit_4.clear()        
+        self.ui.lineEdit_5.clear()
+
     def update_table(self, users):
         rows = len(users)
         self.ui.tableWidget.setRowCount(rows)
@@ -129,6 +136,7 @@ class Interface(QtWidgets.QWidget):
             self.update_table(users = DataBase.get_users())
             self.delete_user_combobox()
             self.fill_combobox()
+        self.clear_2()
 
 
     def refresh_data(self, *args) -> dict:
