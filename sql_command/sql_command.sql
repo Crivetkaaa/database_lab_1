@@ -15,12 +15,12 @@ CREATE TABLE users_name (
 
 CREATE TABLE users_surname (
     id           SERIAL      PRIMARY KEY,
-    users_surname VARCHAR (30) UNIQUE
+    user_surname VARCHAR (30) UNIQUE
 );
 
 CREATE TABLE users_lastname (
     id           SERIAL      PRIMARY KEY,
-    users_lastname VARCHAR (20) UNIQUE
+    user_lastname VARCHAR (20) UNIQUE
 );
 
 CREATE TABLE full_info_user (

@@ -46,7 +46,14 @@ class Interface(QtWidgets.QWidget):
         self.fill_combobox()
         self.update_table(users=DataBase.get_users())
         self.delete_user_combobox()
+        self.clear()
 
+    def clear(self):
+        self.ui.lineEdit_6.clear()
+        self.ui.lineEdit_7.clear()
+        self.ui.lineEdit_8.clear()
+        self.ui.lineEdit_9.clear()        
+        self.ui.lineEdit_10.clear()
 
     def update_table(self, users):
         rows = len(users)
